@@ -1,0 +1,96 @@
+-- Crear la base de datos (se genera al ejecutar en sqlite3)
+-- Nombre del archivo: products.db
+
+CREATE TABLE kategoriak (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    izena TEXT NOT NULL,
+    deskribapena TEXT
+);
+
+CREATE TABLE produktuak (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    izena TEXT NOT NULL,
+    deskribapena TEXT NOT NULL,
+    prezioa REAL NOT NULL,
+    kategoria_id INTEGER NOT NULL,
+    nobedadea INTEGER NOT NULL, -- Sigue siendo 0 o 1
+    eskaintza REAL DEFAULT 0,    -- Ahora guardaremos el % (ej: 15.5)
+    FOREIGN KEY (kategoria_id) REFERENCES kategoriak(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Mezuak (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    izena TEXT NOT NULL,
+    email TEXT NOT NULL,
+    mezua TEXT NOT NULL,
+    erantzunda INTEGER NOT NULL DEFAULT 0,
+    sortze_data TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    producto_id INTEGER,
+    FOREIGN KEY (producto_id) REFERENCES produktuak(id) ON DELETE SET NULL
+);
+
+
+-- 🐾 Kategoria: Janaria (ID: 1)
+INSERT INTO produktuak (izena, deskribapena, prezioa, kategoria_id, nobedadea, eskaintza) VALUES
+('Txakur janaria Premium', 'Txakur helduentzako janari orekatua haragi naturalarekin.', 24.99, 1, 1, 0),
+('Katuentzako pentsu hipoalergenikoa', 'Alergiarik gabeko pentsu naturala katu guztientzat.', 19.50, 1, 0, 15.0),
+('Txakur txikientzako janaria', 'Txakur txikientzako proteina handiko janaria.', 17.20, 1, 0, 0),
+('Katu txikientzako hegaluze lata', 'Hegaluzearen zaporeko janari hezea katu kumeentzat.', 2.30, 1, 1, 10.0),
+('Txakurrentzako hezur naturalak', 'Masticatzeko hezur naturalak hortzak garbitzeko.', 6.99, 1, 0, 0);
+
+-- 🧸 Kategoria: Jostailuak (ID: 2)
+INSERT INTO produktuak (izena, deskribapena, prezioa, kategoria_id, nobedadea, eskaintza) VALUES
+('Soka sendoa', 'Txakurrentzako soka jostailu sendoa tiraka jolasteko.', 8.90, 2, 0, 0),
+('Katuentzako bola distiratsua', 'Argi-efektuak dituen bola elastikoa katuentzat.', 4.50, 2, 1, 20.0),
+('Txakurentzako pelutxe txistukaria', 'Pelutxe biguna soinua egiten duena, jostatzeko.', 9.25, 2, 1, 0),
+('Katu arrantza-jostailua', 'Arrantza makila eta luma mugikorrarekin jostailua.', 6.80, 2, 0, 5.0),
+('Pelota saltakaria', 'Saltoka egiten duen goma-pelota, erresistentea.', 3.75, 2, 0, 0);
+
+-- 🐕 Kategoria: Osagarriak (ID: 3)
+INSERT INTO produktuak (izena, deskribapena, prezioa, kategoria_id, nobedadea, eskaintza) VALUES
+('Txakur lepokoa larruzkoa', 'Larruz egindako lepoko sendoa, tamaina ertaina.', 15.99, 3, 0, 0),
+('Katuentzako arnes erregulagarria', 'Erosotasun eta segurtasun handiko arnesa.', 12.40, 3, 1, 0),
+('Txakurrentzako uhal luzea', '5 metroko uhal automatikoa, paseatzeko.', 18.75, 3, 0, 25.0),
+('Janari-ontzi bikoitza', 'Ura eta janaria bereizteko ontzi bikoitza.', 9.99, 3, 1, 0),
+('Katuentzako garraio-kutxa', 'Bidaietarako kutxa segurua eta aireztatua.', 29.50, 3, 0, 30.0);
+
+-- 🧼 Kategoria: Garbiketa (ID: 4)
+INSERT INTO produktuak (izena, deskribapena, prezioa, kategoria_id, nobedadea, eskaintza) VALUES
+('Txakurrentzako xanpu naturala', 'Larruazal sentikorretarako xanpu hidratatzailea.', 11.80, 4, 1, 0),
+('Katuentzako hondar ekologikoa', 'Hondar xurgatzaile eta biodegradagarria.', 13.20, 4, 0, 10.0),
+('Txakurentzako orrazia', 'Ile luzeko txakurrentzako orrazteko eskuila.', 7.60, 4, 0, 0),
+('Aho-garbitzeko spray animaliarentzat', 'Txakur eta katuen ahoa freskatzeko spray naturala.', 5.90, 4, 1, 15.0),
+('Maskotentzako toailatxo hezeak', 'Eguneroko garbiketarako toailatxo desinfektagarriak.', 4.70, 4, 0, 0);
+
+// Bezeroak tabli
+CREATE TABLE bezeroak (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    izena TEXT NOT NULL,
+    abizenak TEXT NOT NULL, -- UMLan agertzen da
+    helbidea TEXT NOT NULL,
+    herria TEXT NOT NULL,
+    posta_kodea INTEGER NOT NULL,
+    probintzia TEXT NOT NULL,
+    email TEXT NOT NULL
+);
+
+// eskariak tabli:
+
+CREATE TABLE eskariak (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    data TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    bezero_id INTEGER NOT NULL,
+    FOREIGN KEY (bezero_id) REFERENCES bezeroak(id) ON DELETE CASCADE
+);
+
+//eskari_detaileak tabli:
+
+CREATE TABLE eskari_detaileak (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    eskaria_id INTEGER NOT NULL,
+    produktua_id INTEGER NOT NULL,
+    kopurua INTEGER NOT NULL,
+    prezioa_unitarioa REAL NOT NULL, -- Eskariaren momentuko prezioa gordetzeko
+    FOREIGN KEY (eskaria_id) REFERENCES eskariak(id) ON DELETE CASCADE,
+    FOREIGN KEY (produktua_id) REFERENCES produktuak(id)
+);
