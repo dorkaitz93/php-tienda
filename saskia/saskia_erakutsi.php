@@ -21,6 +21,7 @@
                 <li><a href="../saskia/">Saskia</a></li>
                 <li><a href="../mezua/">Kontaktua</a></li>
                 <li><a href="../chatbot/">Chat-bota</a></li>
+                <li><a href="../albisteak/">Albisteak</a></li>
             </ul>
         </nav>
     </div>

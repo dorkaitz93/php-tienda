@@ -16,10 +16,12 @@
     <div class="eskuma">
         <nav>
             <ul class="menua">
-                <li><a href="index.php">Hasiera</a></li>
-                <li><a href="../katalogoa">Katalogoa</a></li>
-                <li><a href="../saskia.html">Saskia</a></li>
-                <li><a href="../mezua/index.php">Kontaktua</a></li>
+                <li><a href="../hasiera/">Hasiera</a></li>
+                <li><a href="../katalogoa/">Katalogoa</a></li>
+                <li><a href="../saskia/">Saskia</a></li>
+                <li><a href="../mezua/">Kontaktua</a></li>
+                <li><a href="../chatbot/">Chat-bota</a></li>
+                <li><a href="../albisteak/">Albisteak</a></li>
             </ul>
         </nav>
     </div>
